@@ -43,5 +43,6 @@ COPY Configs/owfs.conf /etc/owfs.conf
 VOLUME /mnt/1wire
 # EXPOSE 4304
 
+
 CMD script/execute.sh
 
