@@ -1,5 +1,5 @@
 #!/bin/sh -f
-DOCKER_IMAGE_NAME=bkjeholt/mqtt-agent-onewire
+DOCKER_IMAGE_NAME=bkjeholt/mqtt-agent-onewire-${1}-rpi
 DOCKER_CONTAINER_NAME=hic-agent-onewire
 
 echo "------------------------------------------------------------------------"
