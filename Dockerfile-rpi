@@ -38,7 +38,7 @@ RUN chmod 755 /usr/src/app/script/* && \
 #     ls -lR /usr/src/app/script/ && \
 #     echo "------------------------"
 
-COPY Configs/owfs.conf /etc/owfs.conf
+COPY Config/owfs.conf /etc/owfs.conf
 
 VOLUME /mnt/1wire
 # EXPOSE 4304
