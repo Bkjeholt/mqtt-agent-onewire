@@ -23,6 +23,8 @@ var healthCheck = function (configInfo) {
         
         (function healthCheckLoop(index,callbackLoop) {
                 if (index > 0) {
+                    console.log("Health check number " + (index-1));
+                    
                     (self.ci.health_check.check_functions[index-1])(function(err) {
                             if (!err) {
                                 healthCheckLoop(index-1,callbackLoop);
