@@ -12,17 +12,18 @@
  *************************************************************************/
 
 var agent = require('./classes/agentBody');
+var http = require('.(classes/healthCheck.js');
+
 // var agent = require('./AgentClass');
 
-
-var agentObj = agent.create_AgentBody({ 
-                                    agent: {
-                                        name: process.env.npm_package_name,
-                                        rev:  process.env.npm_package_version },
-                                    health_check: {
+var configInfo = { 
+                    agent: {
+                                        name: process.env.DOCKER_IMAGE_NAME,
+                                        rev:  process.env.DOCKER_IMAGE_TAG },
+                    health_check: {
                                         port_no: 3000,
                                         check_functions: [] },
-                                    mqtt: {
+                    mqtt: {
                                         ip_addr: (process.env.MQTT_IP_ADDR !== undefined)? process.env.MQTT_IP_ADDR :
                                                                                            process.env.MQTT_PORT_1883_TCP_ADDR,
                                         port_no: (process.env.MQTT_PORT_NO !== undefined)? process.env.MQTT_PORT_NO :
@@ -35,13 +36,23 @@ var agentObj = agent.create_AgentBody({
                                             latest_status_time: (Math.floor((new Date())/1000)),
                                             timeout: 120 } // seconds
                                         },
-                                    onewire: {
+                    onewire: {
                                         ip_addr: (process.env.OWSERVER_IP_ADDR !== undefined)? process.env.OWSERVER_IP_ADDR : "127.0.0.1",
-                                        port_no: (process.env.OWSERVER_PORT_NO !== undefined)? process.env.OWSERVER_PORT_NO : 4304 },
-                                    node: {
+                                        port_no: (process.env.OWSERVER_PORT_NO !== undefined)? process.env.OWSERVER_PORT_NO : 4304,
+                                        link: {
+                                            status: 'down',
+                                            last_data: 0,
+                                            time_out: 90 }
+                                    },
+                    node: {
                                         scan_node_data: 30000,
                                         scan_new_nodes: 300000 }
-                                  });
+                  };
+
+var agentObj = agent.create_AgentBody(configInfo);
+
+var healthCheckObj = http.create(configInfo);
+
 var cnt= 0;
 
 setInterval(function() {
