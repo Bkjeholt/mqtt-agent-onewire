@@ -2,15 +2,6 @@ FROM hypriot/rpi-node:latest
 
 MAINTAINER Björn Kjeholt <dev@kjeholt.se>
 
-ARG DOCKER_IMAGE_NAME
-ARG DOCKER_IMAGE_TAG
-
-ENV DOCKER_BASE_IMAGE_NAME na
-ENV DOCKER_BASE_IMAGE_TAG na
-
-ENV DOCKER_IMAGE_NAME ${DOCKER_IMAGE_NAME:-UnknownName}
-ENV DOCKER_IMAGE_TAG ${DOCKER_IMAGE_TAG:-UnknownRevision}
-
 RUN apt-get update && \
     apt-get install -y vim \
                        ow-shell \
@@ -21,6 +12,15 @@ RUN mkdir -p /usr/src/app && \
     mkdir -p /usr/src/app/js && \
     mkdir -p /usr/src/app/script
     
+ARG DOCKER_IMAGE_NAME
+ARG DOCKER_IMAGE_TAG
+
+ENV DOCKER_BASE_IMAGE_NAME na
+ENV DOCKER_BASE_IMAGE_TAG na
+
+ENV DOCKER_IMAGE_NAME ${DOCKER_IMAGE_NAME:-UnknownName}
+ENV DOCKER_IMAGE_TAG ${DOCKER_IMAGE_TAG:-UnknownRevision}
+
 WORKDIR /usr/src/app
 
 # Install app dependencies
@@ -67,6 +67,13 @@ COPY Config/owfs.conf /etc/owfs.conf
 
 EXPOSE 3000
 
+#-------------------------------------------------------------------
+# Check for healthy status
+#-------------------------------------------------------------------
+
+HEALTHCHECK CMD curl --fail http://127.0.0.1:3000/ || exit 1
+
+#-------------------------------------------------------------------
 #-------------------------------------------------------------------
 
 CMD script/execute.sh
