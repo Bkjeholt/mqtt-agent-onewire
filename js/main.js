@@ -40,9 +40,7 @@ var configInfo = {
                                         ip_addr: (process.env.OWSERVER_IP_ADDR !== undefined)? process.env.OWSERVER_IP_ADDR : "127.0.0.1",
                                         port_no: (process.env.OWSERVER_PORT_NO !== undefined)? process.env.OWSERVER_PORT_NO : 4304,
                                         link: {
-                                            status: 'down',
-                                            last_data: 0,
-                                            time_out: 90 }
+                                            Math.floor(new Date()/1000): 90 }
                                     },
                     node: {
                                         scan_node_data: 30000,

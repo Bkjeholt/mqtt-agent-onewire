@@ -15,7 +15,11 @@ var owfsClient = require('owfs').Client;
 
 var nodeOneWire = function (ci) {
     var self = this;
-    
+    var healthStatus = {
+                         status: 'down',
+                         last_mqtt_data_update: 0
+                       };
+                       
     this.ci = ci;
     console.log("ConfigInfo", ci);
     
@@ -165,7 +169,8 @@ var nodeOneWire = function (ci) {
                                                                 vtid: self.nodeInfoList[ni].devices[sni].vartypeid,
                                                                 name: self.nodeInfoList[ni].devices[sni].name,
                                                                 time: sampleTime,
-                                                                data: result });                                        
+                                                                data: result });    
+                                                    healthStatus.last_mqtt_data_update = sampleTime;
                                                 }
                                                 
                                                 self.nodeInfoList[ni].devices[sni].last_data = result;
@@ -213,9 +218,24 @@ var nodeOneWire = function (ci) {
                     });
     };
     
+    this.healthCheck = function(callback) {
+        var currTime = Math.floor(new Date()/1000);
+        var lastSampleTime = healthStatus.last_mqtt_data_update;
+        var criticalTime = currTime - self.ci.one_wire.link.time_out;
+        
+        if (lastSampleTime > criticalTime) {
+            healthStatus.status = 'up';
+            callback(null);
+        } else {
+            healthStatus.status = 'down';
+            callback({ error: "non-healthy" });            
+        }
+        
+    };
+    
     (function setup() {
         self.owfsConnect = new owfsClient( self.ci.onewire.ip_addr, self.ci.onewire.port_no);
-        
+        self.ci.health_check.check_functions.push(self.healthCheck);
      })();
 };
 
