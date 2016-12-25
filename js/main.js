@@ -12,7 +12,7 @@
  *************************************************************************/
 
 var agent = require('./classes/agentBody');
-var http = require('.(classes/healthCheck.js');
+var http = require('./classes/healthCheck.js');
 
 // var agent = require('./AgentClass');
 
