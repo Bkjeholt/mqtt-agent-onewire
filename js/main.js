@@ -1,6 +1,6 @@
 /************************************************************************
  Product    : Home information and control
- Date       : 2016-11-05
+ Date       : 2016-12-26
  Copyright  : Copyright (C) 2016 Kjeholt Engineering. All rights reserved.
  Contact    : dev@kjeholt.se
  Url        : http://www-dev.kjeholt.se
@@ -40,7 +40,7 @@ var configInfo = {
                                         ip_addr: (process.env.OWSERVER_IP_ADDR !== undefined)? process.env.OWSERVER_IP_ADDR : "127.0.0.1",
                                         port_no: (process.env.OWSERVER_PORT_NO !== undefined)? process.env.OWSERVER_PORT_NO : 4304,
                                         link: {
-                                            time_out: 90 }
+                                            timeout: 90 }
                                     },
                     node: {
                                         scan_node_data: 30000,

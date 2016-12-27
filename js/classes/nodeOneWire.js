@@ -221,7 +221,7 @@ var nodeOneWire = function (ci) {
     this.healthCheck = function(callback) {
         var currTime = Math.floor(new Date()/1000);
         var lastSampleTime = healthStatus.last_mqtt_data_update;
-        var criticalTime = currTime - self.ci.one_wire.link.time_out;
+        var criticalTime = currTime - self.ci.onewire.link.timeout;
         
         if (lastSampleTime > criticalTime) {
             healthStatus.status = 'up';
