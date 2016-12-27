@@ -8,9 +8,13 @@ RUN apt-get update && \
                        owserver && \
     rm -rf /var/lib/apt/lists*
 
+RUN npm install mqtt && \
+    npm install owfs
+
 RUN mkdir -p /usr/src/app && \
     mkdir -p /usr/src/app/js && \
-    mkdir -p /usr/src/app/script
+    mkdir -p /usr/src/app/script && \
+    mkdir -p /mnt/1wire
     
 ARG DOCKER_IMAGE_NAME
 ARG DOCKER_IMAGE_TAG
@@ -22,19 +26,6 @@ ENV DOCKER_IMAGE_NAME ${DOCKER_IMAGE_NAME:-UnknownName}
 ENV DOCKER_IMAGE_TAG ${DOCKER_IMAGE_TAG:-UnknownRevision}
 
 WORKDIR /usr/src/app
-
-# Install app dependencies
-COPY package.json /usr/src/app/package-original.json
-RUN \
-    sed 's/TestWrapper/js\/main/g' package-original.json > package.json && \
-    rm -rf node_modules nbproject && \
-    echo "----------------" && \
-    ls -laR && \
-    echo "----------------" && \
-    cat package.json && \
-    echo "----------------"
-
-RUN npm install
 
 # Bundle app source
 COPY js /usr/src/app/js
@@ -59,7 +50,7 @@ COPY Config/owfs.conf /etc/owfs.conf
 # Expose port number 4304 to be used for owserver access
 #-------------------------------------------------------------------
 
-# EXPOSE 4304
+EXPOSE 4304
 
 #-------------------------------------------------------------------
 # Expose port number 3000 to be used for health check status
