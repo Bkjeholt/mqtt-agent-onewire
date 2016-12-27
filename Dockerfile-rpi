@@ -1,3 +1,17 @@
+# ************************************************************************
+# Product    : Home information and control
+# Date       : 2016-12-28
+# Copyright  : Copyright (C) 2016 Kjeholt Engineering. All rights reserved.
+# Contact    : dev@kjeholt.se
+# Url        : http://www-dev.kjeholt.se
+# Licence    : ---
+# -------------------------------------------------------------------------
+# File       : mqtt-agent-onewire/Dockerfile-rpi
+# Version    : 1.0.0
+# Author     : Bjorn Kjeholt
+# *************************************************************************
+ 
+
 FROM hypriot/rpi-node:latest
 
 MAINTAINER Björn Kjeholt <dev@kjeholt.se>
@@ -6,15 +20,15 @@ RUN apt-get update && \
     apt-get install -y vim \
                        ow-shell \
                        owserver && \
-    rm -rf /var/lib/apt/lists*
-
-RUN npm install mqtt && \
-    npm install owfs
-
-RUN mkdir -p /usr/src/app && \
+    rm -rf /var/lib/apt/lists* && \
+    \
+    mkdir -p /usr/src/app && \
     mkdir -p /usr/src/app/js && \
     mkdir -p /usr/src/app/script && \
-    mkdir -p /mnt/1wire
+    mkdir -p /mnt/1wire && \
+    \
+    npm install mqtt && \
+    npm install owfs
     
 ARG DOCKER_IMAGE_NAME
 ARG DOCKER_IMAGE_TAG
@@ -44,7 +58,7 @@ COPY Config/owfs.conf /etc/owfs.conf
 # Expose a Volume the owfs file tree, not implemented in 0.3.3
 #-------------------------------------------------------------------
 
-# VOLUME /mnt/1wire
+VOLUME /mnt/1wire
 
 #-------------------------------------------------------------------
 # Expose port number 4304 to be used for owserver access
