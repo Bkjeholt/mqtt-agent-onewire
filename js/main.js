@@ -18,8 +18,13 @@ var http = require('./classes/healthCheck.js');
 
 var configInfo = { 
                     agent: {
-                                        name: process.env.DOCKER_IMAGE_NAME,
-                                        rev:  process.env.DOCKER_IMAGE_TAG },
+                                        name: process.env.DOCKER_CONTAINER_NAME,
+                                        rev:  process.env.DOCKER_IMAGE_TAG,
+                                        docker: {
+                                            image: process.env.DOCKER_IMAGE_NAME,
+                                            image_tag: process.env.DOCKER_IMAGE_TAG,
+                                            container: process.env.DOCKER_CONTAINER_NAME
+                                        }},
                     health_check: {
                                         port_no: 3000,
                                         check_functions: [] },
