@@ -25,16 +25,16 @@ echo "------------------------------------------------------------------------"
 
 docker run -d \
            --restart="always" \
-           --link mqtt-broker:mqtt \
+           --env MQTT_IP_ADDR="192.168.1.10" \
+           --env MQTT_PORT_NO=1883 \
            --privileged \
            --device /dev:/dev \
            --name $DOCKER_CONTAINER_NAME \
            --env DOCKER_CONTAINER_NAME=${DOCKER_CONTAINER_NAME} \
            $DOCKER_IMAGE
 
+
 #           --link mqtt-broker:mqtt \
-
-
 #           --env MQTT_IP_ADDR="192.168.1.10" \
 #           --env MQTT_PORT_NO=1883 \
 #           --env OWSERVER_IP_ADDR="192.168.1.10" \
