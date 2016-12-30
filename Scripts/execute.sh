@@ -1,10 +1,16 @@
 #!/bin/bash -f
 
 echo "---------------------------------------------------------------------------"
-echo "-- Start deamon for onewire to mqtt handling "
+echo "-- Start owserver deamon for onewire to mqtt handling "
 echo "---------------------------------------------------------------------------"
 
 /usr/bin/owserver -c /etc/owfs.conf --foreground &
+
+echo "---------------------------------------------------------------------------"
+echo "-- Start owfs fuse deamon for onewire "
+echo "---------------------------------------------------------------------------"
+
+/usr/bin/owfs -s 127.0.0.1:4304 -m /mnt/1wire/
 
 echo "---------------------------------------------------------------------------"
 echo "-- Connected one wire devices "
