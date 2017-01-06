@@ -59,7 +59,7 @@ var healthCheckObj = http.create(configInfo);
 var cnt= 0;
 
 setInterval(function() {
-    console.log("Status @ " + cnt + "sec. Mqtt link connected: " + agentObj.ci.mqtt.connected);
+//    console.log("Status @ " + cnt + "sec. Mqtt link connected: " + agentObj.ci.mqtt.connected);
     cnt = cnt + 10;
 },10000);
 //abhObj.setup();

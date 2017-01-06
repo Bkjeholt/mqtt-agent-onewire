@@ -30,10 +30,11 @@ var nodeOneWire = function (ci) {
     console.log("--------------------------------------------------------");
 
     console.log("OWFS Connect");
+    /*
     this.owfsConnect.get("/",function(err, directories){
 	console.log("owfs dir ",directories," error info -> ",err);
     });
-
+    */
     this.nodeInfoList = [
 /*        { name: 'AgentInfo',
                            devices: [{ name: 'AgentName',
@@ -88,7 +89,7 @@ var nodeOneWire = function (ci) {
      * @returns {undefined}
      */
     this.updateNodeInfoList = function(callback) {
-        console.log("Update OW node list");
+//        console.log("Update OW node list");
         
         self.owfsConnect.get("/",function(err,listOfDevices) {
                 if (err) {

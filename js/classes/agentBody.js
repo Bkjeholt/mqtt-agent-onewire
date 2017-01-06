@@ -66,7 +66,7 @@ agentBody = function(ci) {
             }                    
         }
 //        console.log("MQTT topic input:",topic);
-        console.log("MQTT Publish: ",topicStr," -> ",msgStr);
+//        console.log("MQTT Publish: ",topicStr," -> ",msgStr);
         
         
         self.mqttClient.publish( topicStr,
@@ -382,6 +382,7 @@ agentBody = function(ci) {
     setInterval(function () {
 //        console.log("Check to see if the mqtt brooker is connected", self.mqttConnected);
                         if (!self.ci.mqtt.connected) {
+                            console.log("Connect to mqtt broker: " + ci.mqtt.ip_addr);
                             self.mqttClient = mqtt.connect("mqtt://"+ci.mqtt.ip_addr,
                                                            { connectTimeout: 5000 });
 
