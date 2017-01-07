@@ -333,6 +333,7 @@ agentBody = function(ci) {
                                             
                                             if (err) {
                                                 console.log("Update node info list err = ", err);
+                                                process.exit(1);
                                             } else {
 //                                                console.log("Update node info list total no of devices = ", self.nodeClient.nodeInfoList.length);
                                 

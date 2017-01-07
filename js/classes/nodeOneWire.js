@@ -94,6 +94,7 @@ var nodeOneWire = function (ci) {
         self.owfsConnect.get("/",function(err,listOfDevices) {
                 if (err) {
                     console.log("Error Update OW node list",err);
+                    process.exit(1);
                     callback(err);
                 } else {
  //                   console.log("OWFS get directory ",listOfDevices);
@@ -129,6 +130,7 @@ var nodeOneWire = function (ci) {
             
                                             if (err) {
                                                 console.log("OWFS read type err", err);
+                                                process.exit(1);
                                                 loop(deviceId-1,callback);
                                             } else {
 //                                                console.log("OWFS read type device", nodeName," type ",result);
@@ -181,6 +183,7 @@ var nodeOneWire = function (ci) {
                                                 readDataSubNode(ni,sni, list, sampleTime, callback);
                                             } else {
                                                 console.log("readDataSubNode err=",err);
+                                                process.exit(1);
                                                 callback(err,list);
                                             }
                                         });
