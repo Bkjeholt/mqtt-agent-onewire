@@ -1,6 +1,6 @@
 {
   "name" : "mqtt-agent-onewire",
-  "version" : "0.9",
+  "version" : "1.2.0",
   "description" : "Home information Center mqtt-based Agent for onewire data and info",
   "keywords" : [ "hic", "mqtt-based", "agent", "onewire" ],
   "author" : {
@@ -22,5 +22,9 @@
   },
   "license" : {
     "type" : "mit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bkjeholt/mqtt-agent-onewire.git"
   }
 }
