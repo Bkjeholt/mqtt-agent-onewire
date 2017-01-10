@@ -27,6 +27,8 @@ docker run -d \
            --restart="always" \
            --env MQTT_IP_ADDR="192.168.1.10" \
            --env MQTT_PORT_NO=1883 \
+           --env OWSERVER_IP_ADDR="192.168.1.78" \
+           --env OWSERVER_PORT_NO=4304 \
            --privileged \
            --device /dev:/dev \
            --name $DOCKER_CONTAINER_NAME \
