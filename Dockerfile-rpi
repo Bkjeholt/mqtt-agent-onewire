@@ -1,85 +1,23 @@
 # ************************************************************************
 # Product    : Home information and control
-# Date       : 2016-12-30
-# Copyright  : Copyright (C) 2016 Kjeholt Engineering. All rights reserved.
+# Date       : 2017-01-10
+# Copyright  : Copyright (C) 2016-2017 Kjeholt Engineering. All rights reserved.
 # Contact    : dev@kjeholt.se
 # Url        : http://www-dev.kjeholt.se
 # Licence    : ---
 # -------------------------------------------------------------------------
 # File       : mqtt-agent-onewire/Dockerfile-rpi
-# Version    : 1.1.0
+# Version    : 2.0.0
 # Author     : Bjorn Kjeholt
 # *************************************************************************
  
-FROM hypriot/rpi-node:latest
+FROM bkjeholt/base-nodejs:latest-rpi
 
 MAINTAINER Björn Kjeholt <dev@kjeholt.se>
-
-RUN apt-get update && \
-    apt-get install -y vim \
-                       ow-shell \
-                       owfs-fuse \
-                       owserver && \
-    rm -rf /var/lib/apt/lists* && \
-    \
-    mkdir -p /usr/src/app && \
-    mkdir -p /usr/src/app/js && \
-    mkdir -p /usr/src/app/script && \
-    mkdir -p /mnt/1wire && \
-    \
-    npm install mqtt && \
-    npm install owfs
     
 ARG DOCKER_IMAGE_NAME
 ARG DOCKER_IMAGE_TAG
 
-ENV DOCKER_BASE_IMAGE_NAME na
-ENV DOCKER_BASE_IMAGE_TAG na
-
 ENV DOCKER_IMAGE_NAME ${DOCKER_IMAGE_NAME:-UnknownName}
 ENV DOCKER_IMAGE_TAG ${DOCKER_IMAGE_TAG:-UnknownRevision}
-
-WORKDIR /usr/src/app
-
-# Bundle app source
-COPY js /usr/src/app/js
-COPY Scripts /usr/src/app/script
-
-RUN chmod 755 /usr/src/app/script/* && \
-    chmod 755 /usr/src/app/*
-
-# RUN echo "------------------------" && \
-#     ls -lR /usr/src/app/script/ && \
-#     echo "------------------------"
-
-COPY Config/owfs.conf /etc/owfs.conf
-
-#-------------------------------------------------------------------
-# Expose a Volume the owfs file tree, not implemented in 0.3.3
-#-------------------------------------------------------------------
-
-VOLUME /mnt/1wire
-
-#-------------------------------------------------------------------
-# Expose port number 4304 to be used for owserver access
-#-------------------------------------------------------------------
-
-EXPOSE 4304
-
-#-------------------------------------------------------------------
-# Expose port number 3000 to be used for health check status
-#-------------------------------------------------------------------
-
-EXPOSE 3000
-
-#-------------------------------------------------------------------
-# Check for healthy status
-#-------------------------------------------------------------------
-
-HEALTHCHECK CMD curl --fail http://127.0.0.1:3000/ || exit 1
-
-#-------------------------------------------------------------------
-#-------------------------------------------------------------------
-
-CMD script/execute.sh
 
