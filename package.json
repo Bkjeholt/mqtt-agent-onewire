@@ -1,6 +1,6 @@
 {
   "name" : "mqtt-agent-onewire",
-  "version" : "1.0",
+  "version" : "0.9",
   "description" : "Home information Center mqtt-based Agent for onewire data and info",
   "keywords" : [ "hic", "mqtt-based", "agent", "onewire" ],
   "author" : {
