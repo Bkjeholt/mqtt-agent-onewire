@@ -30,11 +30,11 @@ var nodeOneWire = function (ci) {
     console.log("--------------------------------------------------------");
 
     console.log("OWFS Connect");
-    /*
+    
     this.owfsConnect.get("/",function(err, directories){
 	console.log("owfs dir ",directories," error info -> ",err);
     });
-    */
+    
     this.nodeInfoList = [
 /*        { name: 'AgentInfo',
                            devices: [{ name: 'AgentName',
