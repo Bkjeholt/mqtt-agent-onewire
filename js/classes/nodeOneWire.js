@@ -15,7 +15,11 @@ var owfsClient = require('owfs').Client;
 
 var nodeOneWire = function (ci) {
     var self = this;
-    
+    var healthStatus = {
+                         status: 'down',
+                         last_mqtt_data_update: 0
+                       };
+                       
     this.ci = ci;
     console.log("ConfigInfo", ci);
     
@@ -26,10 +30,11 @@ var nodeOneWire = function (ci) {
     console.log("--------------------------------------------------------");
 
     console.log("OWFS Connect");
+    
     this.owfsConnect.get("/",function(err, directories){
 	console.log("owfs dir ",directories," error info -> ",err);
     });
-
+    
     this.nodeInfoList = [
 /*        { name: 'AgentInfo',
                            devices: [{ name: 'AgentName',
@@ -84,11 +89,12 @@ var nodeOneWire = function (ci) {
      * @returns {undefined}
      */
     this.updateNodeInfoList = function(callback) {
-        console.log("Update OW node list");
+//        console.log("Update OW node list");
         
         self.owfsConnect.get("/",function(err,listOfDevices) {
                 if (err) {
                     console.log("Error Update OW node list",err);
+                    process.exit(1);
                     callback(err);
                 } else {
  //                   console.log("OWFS get directory ",listOfDevices);
@@ -124,6 +130,7 @@ var nodeOneWire = function (ci) {
             
                                             if (err) {
                                                 console.log("OWFS read type err", err);
+                                                process.exit(1);
                                                 loop(deviceId-1,callback);
                                             } else {
 //                                                console.log("OWFS read type device", nodeName," type ",result);
@@ -165,7 +172,8 @@ var nodeOneWire = function (ci) {
                                                                 vtid: self.nodeInfoList[ni].devices[sni].vartypeid,
                                                                 name: self.nodeInfoList[ni].devices[sni].name,
                                                                 time: sampleTime,
-                                                                data: result });                                        
+                                                                data: result });    
+                                                    healthStatus.last_mqtt_data_update = sampleTime;
                                                 }
                                                 
                                                 self.nodeInfoList[ni].devices[sni].last_data = result;
@@ -175,6 +183,7 @@ var nodeOneWire = function (ci) {
                                                 readDataSubNode(ni,sni, list, sampleTime, callback);
                                             } else {
                                                 console.log("readDataSubNode err=",err);
+                                                process.exit(1);
                                                 callback(err,list);
                                             }
                                         });
@@ -213,9 +222,24 @@ var nodeOneWire = function (ci) {
                     });
     };
     
+    this.healthCheck = function(callback) {
+        var currTime = Math.floor(new Date()/1000);
+        var lastSampleTime = healthStatus.last_mqtt_data_update;
+        var criticalTime = currTime - self.ci.onewire.link.timeout;
+        
+        if (lastSampleTime > criticalTime) {
+            healthStatus.status = 'up';
+            callback(null);
+        } else {
+            healthStatus.status = 'down';
+            callback({ error: "non-healthy" });            
+        }
+        
+    };
+    
     (function setup() {
         self.owfsConnect = new owfsClient( self.ci.onewire.ip_addr, self.ci.onewire.port_no);
-        
+        self.ci.health_check.check_functions.push(self.healthCheck);
      })();
 };
 
