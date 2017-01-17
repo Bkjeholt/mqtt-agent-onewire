@@ -11,7 +11,7 @@
 # Author     : Bjorn Kjeholt
 # *************************************************************************
  
-FROM bkjeholt/base-nodejs:latest-x86
+FROM bkjeholt/base-nodejs:1.2-x86
 
 MAINTAINER Björn Kjeholt <dev@kjeholt.se>
     
